@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>First Page</title>
+</head>
+<body>
+    <h1>Welcome to CycleMart</h1>
+  
+    <table>
+        <tr>
+            <th>id</th>
+            <th>brandname</th>
+            <th>counter</th>
+            <th>isAvailable</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="cycle : ${cycles}">
+            <td th:text="${cycle.id}"></td>
+            <td th:text="${cycle.brandname}"></td>
+            <td th:text="${cycle.counter}"></td>
+            <td th:text="${cycle.isAvailable}"></td>
+            <td>
+                <a th:if="${cycle.isAvailable}" th:href="@{/canBorrow/{id}(id=${cycle.id})}" th:text="Borrow"></a>
+                <span th:if="${!cycle.isAvailable}">Not Available</span>
+            </td>
+            <td>
+                <a th:unless="${cycle.isAvailable}" th:href="@{/canReturn/{id}(id=${cycle.id})}" th:text="Return"></a>
+                <span th:if="${cycle.isAvailable}">Not Available</span>
+            </td>
+            
+            <td>
+                
+                <form th:action="@{/incrementCounter/{id}(id=${cycle.id})}" method="get">
+                    <input type="number" name="incrementValue" value="1" >
+                    <input type="submit" value="Increment">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Link to navigate to the stock.html page -->
+    <a href="/stock">Show All</a>
+
+    <div th:if="${message}">
+        <p th:text="${message}" style="color: green;"></p>
+    </div>
+</body>
+</html>
